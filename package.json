@@ -1,0 +1,33 @@
+{
+  "name": "data_mining",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.4.0",
+    "axios": "^1.1.3",
+    "bootstrap": "^5.2.2",
+    "cheerio": "^1.0.0-rc.12",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "jquery": "^3.6.1",
+    "js-beautify": "^1.14.6",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "node-fetch": "^2.6.7",
+    "prompts": "^2.4.2",
+    "puppeteer": "^19.0.0",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.1",
+    "yaml": "^2.1.3",
+    "youtube-thumbnails": "^1.1.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+    "puppeterOptions": {
+        "headless": false,
+        "ignoreHTTPSErrors": true,
+        "args": [
+            "--window-size=530,1820"
+        ]
+    },
+    "wid": 530,
+    "hig": 720,
+    "speed": 1000,
+    "pageCount": 10,
+    "jeda": 120,
+    "listKeyword": [
+        "Prabowo Subianto",
+        "Anies Baswedan",
+        "ganjar pranowo",
+        "sandiaga uno",
+        "Ridwan Kamil",
+        "Puan Maharani",
+        "Dedi Mulyadi",
+        "Moeldoko",
+        "Andika Perkasa",
+        "Airlangga Hartarto",
+        "Erick Thohir",
+        "Arsjad Rasjid",
+        "Khofifah Indar Parawansa",
+        "Agus Harimurti Yudhoyono"
+    ]
+}

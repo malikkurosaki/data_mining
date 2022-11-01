@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DataContent {
+  id        String    @id @default(uuid())
+  source    String?
+  title     String?
+  link      String?
+  date      DateTime?
+  url       String?
+  content   String?
+  category  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model GoogleNews {
+  id        String   @id @default(uuid())
+  title     String?  @unique
+  source    String?
+  des       String?  @db.LongText
+  link      String?  @db.LongText
+  img       String?  @db.LongText
+  waktu     String?
+  Keyword   Keyword? @relation(fields: [keywordId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  keywordId String?
+}
+
+model YoutubeContent {
+  id        String   @id @default(uuid())
+  title     String?  @unique
+  source    String?
+  views     String?
+  date      String?
+  link      String?  @db.LongText
+  img       String?  @db.LongText
+  Keyword   Keyword? @relation(fields: [keywordId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  keywordId String?
+}
+
+model FacebookLike {
+  // gunakan konten url yang di splice
+  id          String
+  name        String
+  contentUrl  String?  @db.Text
+  profileUrl  String?  @db.Text
+  kotaSaatIni String?
+  kotaAsal    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Keyword     Keyword? @relation(fields: [keywordId], references: [id])
+  keywordId   String?
+
+  @@id([id, name])
+}
+
+// userName: "",
+// userUrl: "",
+// content: "",
+// contentId: "",
+// location: ""
+
+model TwitterLates {
+  userName  String
+  userUrl   String
+  contentId String
+  content   String?  @db.Text
+  location  String?
+  Keyword   Keyword? @relation(fields: [keywordId], references: [id])
+  keywordId String?
+
+  @@id([userName, contentId])
+}
+
+model Keyword {
+  id             String           @id @default(uuid())
+  name           String?          @unique
+  profileId      String?
+  idx            Int?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  CollectCount   CollectCount[]
+  YoutubeContent YoutubeContent[]
+  GoogleNews     GoogleNews[]
+  FacebookLike   FacebookLike[]
+  TwitterLates   TwitterLates[]
+}
+
+model CollectCount {
+  id        String   @id @default(uuid())
+  Keyword   Keyword? @relation(fields: [keywordId], references: [id])
+  cnt       Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  keywordId String?
+}

@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+const _ = require('lodash');
+const { env } = require('process');
+require('colors');
+const beautify = require('js-beautify').js;
+console.log(`
+===================================
+Bali Interaktif Perkasa data mining
+v: 0.0.1
+===================================
+`.green)
+
+const path = require('path');
+require('prompts')({
+    type: "autocomplete",
+    name: "menu",
+    message: "pilih menu",
+    choices: require('fs').readdirSync('./lib_perintah').map(e => {
+        return {
+            title: e.split('.')[0].replace('_', ' '),
+            value: e
+        }
+    })
+}).then(async ({ menu }) => {
+    if (!menu) return console.log("ok, bey...".yellow)
+    // require(`./lib_perintah/${menu}`)()
+    require('child_process').execSync(`node ${menu}`, { stdio: "inherit", cwd: './lib_perintah' })
+    // if (`${menu}`.includes('google_news')) {
+    //     let listKeyword = ["anis", "prabowo", "ganjar"]
+    //     for (let key of listKeyword) {
+    //         await require('./lib_perintah/' + menu)(key)
+    //     }
+    //     setInterval(async () => {
+    //         for (let key of listKeyword) {
+    //             await require('./lib_perintah/' + menu)(key)
+    //         }
+    //     }, 60 * 1000)
+    // } else {
+    //     require('./lib_perintah/' + menu)()
+    // }
+})
+
+// async function detikNews() {
+//     require('./lib/detik_news.js')()
+// }
+
+// async function cnnIndonesia() {
+//     require('./lib/cnn_indonesia.js')();
+// }
+
+
+// async function googleNews() {
+//     // require('prompts')({
+//     //     type: "text",
+//     //     name: "text",
+//     //     message: "masukkan kata kunci",
+//     // }).then(({ text }) => {
+//     //     if (!text || text == "") return console.log("masukkan kata kunci")
+//     //     require('./lib/google_news.js')(text);
+//     // })
+
+//     require('./lib/google_news.js')("prabowo");
+
+// }
+
+
+// async function cobaClick() {
+//     require('./lib/coba_click.js')();
+// }
+
+// async function help() {
+//     console.log(`
+//     Bali Interaktif Perkasa data mining
+//     -----------------------------------
+//     v: 0.0.1
+//     `.green)
+// }
+
+// async function prismaMigrate() {
+//     require('child_process').execSync(`npx prisma migrate dev --name apa`, { stdio: "inherit" });
+// }
+
+// async function prismaGenerate() {
+//     require('child_process').execSync(`npx prisma generate`, { stdio: "inherit" });
+// }
+
