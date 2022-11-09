@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -41,6 +42,9 @@ model GoogleNews {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   keywordId String?
+
+  @@fulltext([title])
+  @@fulltext([title, des])
 }
 
 model YoutubeContent {
@@ -55,6 +59,8 @@ model YoutubeContent {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   keywordId String?
+
+  @@fulltext([title])
 }
 
 model FacebookLike {
@@ -89,6 +95,7 @@ model TwitterLates {
   keywordId String?
 
   @@id([userName, contentId])
+  @@fulltext([content])
 }
 
 model Keyword {

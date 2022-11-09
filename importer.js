@@ -13,7 +13,7 @@ const coockies = require('./cookies.json');
 
 module.exports = {
     ppt,
-    puppeteer,
+    // puppeteer,
     cheerio,
     axios,
     colors,
@@ -22,7 +22,8 @@ module.exports = {
     options,
     coockies,
     puppeterLoader: async function () {
-        const browser = await puppeteer.launch(options.puppeterOptions);
+
+        const browser = await puppeteer.launch({ executablePath: ppt.executablePath(), ...options.puppeterOptions });
         const [p] = await browser.pages();
 
         /**@type {ppt.Page} */
@@ -36,7 +37,7 @@ module.exports = {
         });
         return {
             browser,
-            page,   
+            page,
         }
     }
 }

@@ -1,10 +1,11 @@
-const {Prisma} = require("@prisma/client");
-const {puppeterLoader, cheerio} = require("./../importer");
+const { Prisma } = require("@prisma/client");
+const { puppeterLoader, cheerio } = require("./../importer");
 const puppeteer = require("puppeteer");
+const { execSync } = require('child_process')
 let listHasil = [];
 let countIndex = 100;
 let idx = 0;
-const prisma = new(require("@prisma/client").PrismaClient)();
+const prisma = new (require("@prisma/client").PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
 
@@ -21,30 +22,38 @@ async function main(keyword) {
     let listHasil = [];
 
     if (page === undefined) {
-        const {page: pg} = await puppeterLoader();
+        const { page: pg } = await puppeterLoader();
         page = pg;
     }
 
-    await page.goto(`https://mobile.twitter.com/search?q=${
-        keyword.name
-    }&src=typeahead_click&f=live`, {
+    console.log("membuka target")
+    await page.goto(`https://mobile.twitter.com/search?q=${keyword.name
+        }&src=typeahead_click&f=live`, {
         waitUntil: "networkidle2",
         timeout: 0
     });
 
     // gak dipake dulu karena gak mempan dapetnya segitue aja
     // await cobaScroll(page);
+    console.log("load data content")
     let $ = cheerio.load(await page.content());
     let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
     console.log("mendapatkan konten sebanyak : " + listContent.length)
+    
+    console.log("mengurai kontent")
     for (let itm of listContent) {
         let item = $(itm).find("article > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div > div > div > div > div > div").find("a");
 
         // isian db
+        console.log("mengambil alamat url user")
         let userUrl = item.attr("href");
+
+        if(!userUrl) continue
+
         body.userUrl = userUrl;
 
         // isian db
+        console.log("mengambil nama user")
         let userName = item.text();
         body.userName = userName;
 
@@ -52,6 +61,7 @@ async function main(keyword) {
         // console.log("user name: " + userName);
 
         // article/div/div/div/div[2]/div[2]/div[2]/div[1]/div
+        console.log("mengambil content user")
         let itemContent = $("article > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2)").find("span");
         // console.log(itemContent.text())
         // console.log("--------------------------------")
@@ -62,13 +72,16 @@ async function main(keyword) {
         body.contentId = contennya.trim().substring(0, 50)
         body.keywordId = keyword.id
 
+        console.log('menuju target user')
         await page.goto(`https://mobile.twitter.com${userUrl}`, {
             waitUntil: "networkidle2",
             timeout: 0
         });
+
         const $$ = cheerio.load(await page.content());
 
         // isian db
+        console.log("mengambil lokasi")
         const lokasi = $$('span[data-testid="UserLocation"]');
         body.location = lokasi.text();
         if (body.location == "") {
@@ -92,6 +105,7 @@ async function main(keyword) {
             update: body
         })
         console.log("menyimpan success!".green);
+        console.log("total : " + await prisma.twitterLates.count())
 
     }
 
@@ -115,20 +129,20 @@ async function main(keyword) {
     // #react-root > div > div > div.css-1dbjc4n.r-18u37iz.r-13qz1uu.r-417010 > main > div > div > div > div > div > div:nth-child(3) > div > section > div
 }
 
-/**@param {puppeteer.Page} page*/
-async function cobaScroll(page) {
-    for (let i in[...new Array(10)]) {
-        console.log("scrolling...");
-        await page.evaluate(() => {
-            window.scrollTo(0, window.document.body.scrollHeight);
-        });
-        await new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve();
-            }, 1000);
-        });
-    }
-}
+// /**@param {puppeteer.Page} page*/
+// async function cobaScroll(page) {
+//     for (let i in [...new Array(10)]) {
+//         console.log("scrolling...");
+//         await page.evaluate(() => {
+//             window.scrollTo(0, window.document.body.scrollHeight);
+//         });
+//         await new Promise((resolve, reject) => {
+//             setTimeout(() => {
+//                 resolve();
+//             }, 1000);
+//         });
+//     }
+// }
 
 async function run() {
     const keyword = await prisma.keyword.findMany({
@@ -139,13 +153,19 @@ async function run() {
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed);
         await main(itm);
-        await prisma.collectCount.create({
-            data: {
-                keywordId: itm.id
-            }
-        });
-        // return;
-    }run();
+
+        // await prisma.collectCount.create({
+        //     data: {
+        //         keywordId: itm.id
+        //     }
+        // });
+
+        // mengupdate ke server
+        console.log("update date ke server ...".bgYellow)
+        execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
+    }
+
+    await run();
 }
 
 run();

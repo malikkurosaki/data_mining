@@ -4,6 +4,7 @@ const prisma = new (require('@prisma/client').PrismaClient)();
 const { speed, pageCount } = require('../config.json')
 /**@type {puppeteer.page} */
 var page;
+const execSync = require('child_process').execSync
 
 async function main(keyword) {
     if (page === undefined) {
@@ -105,15 +106,21 @@ async function ambilData(page, keyword) {
 }
 
 async function run() {
-    const keyword = await prisma.keyword.findMany()
+    const keyword = await prisma.keyword.findMany({
+        orderBy: {
+            idx: "asc"
+        }
+    })
     for (let itm of keyword) {
         console.log("search to : " + itm.name.toString().bgRed)
         await main(itm);
-        await prisma.collectCount.create({
-            data: {
-                keywordId: itm.id
-            }
-        })
+        // await prisma.collectCount.create({
+        //     data: {
+        //         keywordId: itm.id
+        //     }
+        // })
+        console.log("update date ke server ...".bgYellow)
+        execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
     }
     await run()
 }

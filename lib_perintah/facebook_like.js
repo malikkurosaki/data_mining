@@ -11,6 +11,7 @@ puppeteer.use(pluginStealth());
 const config = require("../config.json");
 const coockies = require("../cookies.json");
 const { Prisma } = require("@prisma/client");
+const { execSync } = require("child_process");
 const prisma = new (require("@prisma/client").PrismaClient)();
 
 /**@type {ppt.Browser} **/
@@ -28,7 +29,7 @@ async function main(keyword) {
 
   if (!page) {
     // init
-    const br = await puppeteer.launch(config.puppeterOptions);
+    const br = await puppeteer.launch({ executablePath: ppt.executablePath(), ...config.puppeterOptions });
     const pg = await br.pages();
     browser = br;
     page = pg[0];
@@ -141,7 +142,7 @@ async function main(keyword) {
           console.log("kota Saat Ini: ".green, body.kotaSaatIni);
           console.log("kota asal: ".green, body.kotaSaatIni);
           console.log("Keyword: " + keyword.name);
-          console.log("content id: "+ body.id)
+          console.log("content id: " + body.id)
           console.log(
             "----------------------------------------------------------------"
           );
@@ -211,13 +212,20 @@ async function run() {
   for (let itm of keyword) {
     console.log("search to : " + itm.name.toString().bgGreen);
     await main(itm);
-    await prisma.collectCount.create({
-      data: {
-        keywordId: itm.id,
-      },
-    });
+    // await prisma.collectCount.create({
+    //   data: {
+    //     keywordId: itm.id,
+    //   },
+    // });
+
+    
   }
   await run();
+
+  
+  // mengupdate ke server
+  console.log("update date ke server ...".bgYellow)
+  execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
 }
 
 /**@param {number} berapa */

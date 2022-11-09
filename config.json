@@ -3,13 +3,13 @@
         "headless": false,
         "ignoreHTTPSErrors": true,
         "args": [
-            "--window-size=530,1820"
+            "--window-size=460,1280"
         ]
     },
-    "wid": 530,
-    "hig": 720,
-    "speed": 1000,
-    "pageCount": 10,
+    "wid": 460,
+    "hig": 1280,
+    "speed": 500,
+    "pageCount": 5,
     "jeda": 120,
     "listKeyword": [
         "Prabowo Subianto",
@@ -26,5 +26,7 @@
         "Arsjad Rasjid",
         "Khofifah Indar Parawansa",
         "Agus Harimurti Yudhoyono"
-    ]
+    ],
+    "host": "http://localhost:3000",
+    "target_host_update": "http://localhost:3000/api/update/score"
 }
