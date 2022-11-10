@@ -12,6 +12,7 @@ const config = require("../config.json");
 const coockies = require("../cookies.json");
 const { Prisma } = require("@prisma/client");
 const { execSync } = require("child_process");
+const score_update = require("../xupdate/dashboard/score_update");
 const prisma = new (require("@prisma/client").PrismaClient)();
 
 /**@type {ppt.Browser} **/
@@ -29,12 +30,12 @@ async function main(keyword) {
 
   if (!page) {
     // init
-    const br = await puppeteer.launch({...config.puppeterOptions });
+    const br = await puppeteer.launch({ ...config.puppeterOptions });
     const pg = await br.pages();
     browser = br;
     page = pg[0];
   }
-  
+
 
   await page.setCookie(...coockies);
   // await page.emulate(ppt.KnownDevices['Nokia N9']);
@@ -225,11 +226,11 @@ async function run() {
 
   }
   await run();
-
+  await score_update()
 
   // mengupdate ke server
-  console.log("update date ke server ...".bgYellow)
-  execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
+  // console.log("update date ke server ...".bgYellow)
+  // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 }
 
 /**@param {number} berapa */

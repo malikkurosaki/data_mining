@@ -1,7 +1,8 @@
 
 const { puppeterLoader, cheerio, colors, puppeteer } = require('../importer')
 const prisma = new (require('@prisma/client').PrismaClient)();
-const { speed, pageCount } = require('../config.json')
+const { speed, pageCount } = require('../config.json');
+const score_update = require('../xupdate/dashboard/score_update');
 /**@type {puppeteer.page} */
 var page;
 const execSync = require('child_process').execSync
@@ -119,10 +120,11 @@ async function run() {
         //         keywordId: itm.id
         //     }
         // })
-        console.log("update date ke server ...".bgYellow)
-        execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
+        // console.log("update date ke server ...".bgYellow)
+        // execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
     }
     await run()
+    await score_update()
 }
 
 run()

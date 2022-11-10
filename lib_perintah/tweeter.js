@@ -1,7 +1,8 @@
 const { Prisma } = require("@prisma/client");
 const { puppeterLoader, cheerio } = require("./../importer");
 const puppeteer = require("puppeteer");
-const { execSync } = require('child_process')
+const { execSync } = require('child_process');
+const score_update = require("../xupdate/dashboard/score_update");
 let listHasil = [];
 let countIndex = 100;
 let idx = 0;
@@ -39,7 +40,7 @@ async function main(keyword) {
     let $ = cheerio.load(await page.content());
     let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
     console.log("mendapatkan konten sebanyak : " + listContent.length)
-    
+
     console.log("mengurai kontent")
     for (let itm of listContent) {
         let item = $(itm).find("article > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div > div > div > div > div > div").find("a");
@@ -48,7 +49,7 @@ async function main(keyword) {
         console.log("mengambil alamat url user")
         let userUrl = item.attr("href");
 
-        if(!userUrl) continue
+        if (!userUrl) continue
 
         body.userUrl = userUrl;
 
@@ -161,11 +162,13 @@ async function run() {
         // });
 
         // mengupdate ke server
-        console.log("update date ke server ...".bgYellow)
-        execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
+
     }
 
     await run();
+    await score_update()
+    // console.log("update date ke server ...".bgYellow)
+    // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 }
 
 run();

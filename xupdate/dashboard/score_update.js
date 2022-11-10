@@ -5,7 +5,7 @@ const colors = require('colors');
 const path = require('path');
 const _ = require('lodash');
 
-async function main() {
+module.exports = async () => {
     let data = await prisma.keyword.findMany({
         include: {
             _count: {
@@ -30,12 +30,12 @@ async function main() {
     })
 
     let total = _.sumBy(hasil, (e) => e.score);
-    
+
     let result2 = hasil.map(e => ({
         id: e.id,
         idx: e.idx,
         name: e.name,
-        score: Number(((e.score/total) * 100).toFixed())
+        score: Number(((e.score / total) * 100).toFixed())
     }))
 
     try {
@@ -46,8 +46,7 @@ async function main() {
     } catch (error) {
         console.log("server tujuan error: 500".red)
         console.log(__filename)
+        console.log(error)
     }
 
 }
-
-main()

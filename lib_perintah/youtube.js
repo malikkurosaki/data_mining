@@ -1,3 +1,4 @@
+const score_update = require('../xupdate/dashboard/score_update');
 const { puppeterLoader, cheerio, puppeteer } = require('./../importer')
 let listHasil = []
 let countIndex = 100;
@@ -99,7 +100,8 @@ async function run() {
             }
         })
     }
-    run();
+    await run();
+    await score_update();
 }
 
 run();
