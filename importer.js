@@ -23,7 +23,7 @@ module.exports = {
     coockies,
     puppeterLoader: async function () {
 
-        const browser = await puppeteer.launch({ executablePath: ppt.executablePath(), ...options.puppeterOptions });
+        const browser = await puppeteer.launch({...options.puppeterOptions });
         const [p] = await browser.pages();
 
         /**@type {ppt.Page} */

@@ -29,7 +29,7 @@ async function main(keyword) {
 
   if (!page) {
     // init
-    const br = await puppeteer.launch({ executablePath: ppt.executablePath(), ...config.puppeterOptions });
+    const br = await puppeteer.launch({...config.puppeterOptions });
     const pg = await br.pages();
     browser = br;
     page = pg[0];
@@ -49,16 +49,19 @@ async function main(keyword) {
     timeout: 0,
   });
 
+  console.log("mendapatkan kontent album")
   let cher = cheerio.load(await page.content());
   let photosAlbumLink = cher(
     "#root > div > div > div > div:nth-child(1) > a"
   ).attr("href");
+
   if (photosAlbumLink) {
     console.log("go to album link");
     await page.goto("https://m.facebook.com" + photosAlbumLink, {
       waitUntil: "networkidle2",
       timeout: 0,
     });
+
   } else {
     console.log("cek koneksi".red);
     return;
@@ -161,6 +164,8 @@ async function main(keyword) {
 
           console.log("menyimpan success!".green);
 
+
+
           // tunngu sedetik
           await new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -183,8 +188,9 @@ async function clickSelengkapnya(page) {
   let selengkapnya = await page.$("#reaction_profile_pager");
 
   try {
-    selengkapnya.click();
+    await selengkapnya.click();
     console.log("click selengkapnya");
+
     await clickSelengkapnya(page);
   } catch (error) {
     console.log("tidak terdapat tombol selengkapnya > lanjut ".red);
@@ -212,20 +218,17 @@ async function run() {
   for (let itm of keyword) {
     console.log("search to : " + itm.name.toString().bgGreen);
     await main(itm);
-    // await prisma.collectCount.create({
-    //   data: {
-    //     keywordId: itm.id,
-    //   },
-    // });
+    // update ke server
+    console.log("update date ke server ...".bgYellow)
+    execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 
-    
   }
   await run();
 
-  
+
   // mengupdate ke server
   console.log("update date ke server ...".bgYellow)
-  execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
+  execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 }
 
 /**@param {number} berapa */
