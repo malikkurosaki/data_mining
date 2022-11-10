@@ -34,6 +34,7 @@ async function main(keyword) {
     browser = br;
     page = pg[0];
   }
+  
 
   await page.setCookie(...coockies);
   // await page.emulate(ppt.KnownDevices['Nokia N9']);
