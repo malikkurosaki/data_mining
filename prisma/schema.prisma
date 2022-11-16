@@ -42,9 +42,9 @@ model GoogleNews {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   keywordId String?
+  // @@fulltext([title, des])
 
   @@fulltext([title])
-  @@fulltext([title, des])
 }
 
 model YoutubeContent {
@@ -79,6 +79,36 @@ model FacebookLike {
   @@id([id, name])
 }
 
+// latitude: -7.45597405,
+// longitude: 112.66088771295344,
+// formattedAddress: 'Sidoarjo, Jawa Timur, Indonesia',
+// country: 'Indonesia',
+// city: undefined,
+// state: 'Jawa Timur',
+// zipcode: undefined,
+// streetName: undefined,
+// streetNumber: undefined,
+// countryCode: 'ID',
+// neighbourhood: '',
+// provider: 'openstreetmap'
+
+model Lokasi {
+  latitude         String
+  longitude        String
+  formattedAddress String?
+  country          String?
+  city             String?
+  state            String?
+  zipcode          String?
+  streetName       String?
+  streetNumber     String?
+  countryCode      String?
+  neighbourhood    String?
+  provider         String?
+
+  @@id([latitude, longitude])
+}
+
 // userName: "",
 // userUrl: "",
 // content: "",
@@ -93,9 +123,9 @@ model TwitterLates {
   location  String?
   Keyword   Keyword? @relation(fields: [keywordId], references: [id])
   keywordId String?
+  // @@fulltext([content])
 
   @@id([userName, contentId])
-  @@fulltext([content])
 }
 
 model Keyword {
@@ -119,4 +149,15 @@ model CollectCount {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   keywordId String?
+}
+
+model TrainAi {
+  id        String   @id @default(uuid())
+  name      String?
+  result    Json?
+  content   Json?
+  suggest   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  iteration Int?
 }

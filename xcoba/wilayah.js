@@ -1,30 +1,63 @@
 const prisma = new (require('@prisma/client').PrismaClient)()
-const nodeGeocoder = require('node-geocoder')
+const Geo = require('node-geocoder')({ provider: "openstreetmap" })
+const prompts = require('prompts');
+const _ = require('lodash');
+const converter = require('json-2-csv');
+const fs = require('fs');
 
-async function main() {
-    const data = await prisma.facebookLike.groupBy({
-        by: ['kotaAsal', 'kotaSaatIni'],
+const listMenu = [listLokasi, groupLokasi, koordinat]
+
+prompts({
+    type: "autocomplete",
+    name: "menu",
+    message: "pilih aja menunya",
+    choices: listMenu.map(e => ({
+        title: e.name,
+        value: e
+    }))
+}).then(({ menu }) => {
+    if (!menu) return console.log("ok , bye ...")
+    menu()
+})
+
+
+async function listLokasi() {
+    const data = await prisma.twitterLates.findMany({
         where: {
-            OR: {
-                kotaAsal: {
-                    not: ""
-                },
-                kotaSaatIni: {
-                    not: ""
-                }
+            location: {
+                not: null
+            }
+        },
+        select: {
+            location: true
+        }
+    })
+
+    console.log(data)
+}
+
+async function groupLokasi() {
+    const data = await prisma.twitterLates.groupBy({
+        by: ['location'],
+        where: {
+            location: {
+                not: null
             }
         }
     })
 
-    const tw = await prisma.twitterLates.groupBy({
-        by: ["location"]
+    data.forEach(d => d.train = "")
+
+    converter.json2csv(data, (err, val) => {
+        fs.writeFileSync('data_lokasi.csv', val, "utf-8")
     })
 
-    const geoCoder = nodeGeocoder({provider: "openstreetmap"})
-
-    geoCoder.geocode('denpasar', (e, data) => {
-        console.log(data)
-    }).catch(e => console.log(e))
+    console.log("completed")
 }
 
-main();
+async function koordinat() {
+    const data = Geo.geocode('Rawa Belong', (err, [val]) => {
+
+        console.log(val);
+    })
+}
