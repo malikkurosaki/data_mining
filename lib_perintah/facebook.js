@@ -58,6 +58,13 @@ const config = require('../config.json');
 const coockies = require('../cookies.json');
 
 async function main() {
+    
+    if(os.type() === 'Darwin') {
+        config.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    }else{
+        config.puppeterOptions['headless'] = true
+    }
+
     const browser = await puppeteer.launch(config.puppeterOptions);
     const [page] = await browser.pages();
     await page.setCookie(...coockies)

@@ -3,9 +3,12 @@
         "headless": false,
         "ignoreHTTPSErrors": true,
         "args": [
-            "--window-size=460,1280"
-        ],
-        "executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            "--window-size=460,1280",
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--use-gl=egl"
+        ]
+        
     },
     "wid": 460,
     "hig": 1280,

@@ -10,7 +10,11 @@ const pluginStealth = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(pluginStealth());
 const options = require('./config.json');
 const coockies = require('./cookies.json');
+const os = require('os');
 
+console.log(os.type())
+
+// "executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 module.exports = {
     ppt,
     // puppeteer,
@@ -22,6 +26,12 @@ module.exports = {
     options,
     coockies,
     puppeterLoader: async function () {
+
+        if(os.type() === 'Darwin') {
+            options.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        }else{
+            options.puppeterOptions['headless'] = true
+        }
 
         const browser = await puppeteer.launch({...options.puppeterOptions });
         const [p] = await browser.pages();

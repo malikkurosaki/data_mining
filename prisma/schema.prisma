@@ -161,3 +161,55 @@ model TrainAi {
   updatedAt DateTime @updatedAt
   iteration Int?
 }
+
+model Project {
+  id            String        @id @default(uuid())
+  idx           Int?
+  name          String?
+  des           String?
+  createBy      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  ProjectType   ProjectType[]
+  ProjectUser   ProjectUser?  @relation(fields: [projectUserId], references: [id])
+  projectUserId String?
+}
+
+model ProjectUser {
+  id        String    @id @default(uuid())
+  idx       Int?
+  name      String?
+  email     String?
+  password  String?
+  role      Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Project   Project[]
+}
+
+model ProjectUserRole {
+  id    String  @id @default(uuid())
+  title String?
+  des   String?
+}
+
+model ProjectType {
+  id          String        @id @default(uuid())
+  title       String?
+  des         String?
+  idx         Int?
+  Project     Project?      @relation(fields: [projectId], references: [id])
+  projectId   String?
+  ProjectItem ProjectItem[]
+}
+
+model ProjectItem {
+  id            String       @id @default(uuid())
+  idx           Int?
+  title         String?
+  des           String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  ProjectType   ProjectType? @relation(fields: [projectTypeId], references: [id])
+  projectTypeId String?
+}

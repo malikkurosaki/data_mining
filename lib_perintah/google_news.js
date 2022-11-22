@@ -5,7 +5,6 @@ const { speed, pageCount } = require('../config.json');
 const score_update = require('../xupdate/dashboard/score_update');
 /**@type {puppeteer.page} */
 var page;
-const execSync = require('child_process').execSync
 
 async function main(keyword) {
     if (page === undefined) {

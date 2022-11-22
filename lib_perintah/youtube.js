@@ -6,6 +6,7 @@ let idx = 0;
 const prisma = new (require('@prisma/client').PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
+
 async function main(keyword) {
     if (page === undefined) {
         const { page: pg } = await puppeterLoader();
@@ -43,6 +44,7 @@ async function main(keyword) {
             link,
             keywordId
         }
+
         console.log(body)
         listHasil.push(body);
 
@@ -86,11 +88,13 @@ async function cobaScroll(page) {
 
 
 async function run() {
+
     const keyword = await prisma.keyword.findMany({
         orderBy: {
             idx: "asc"
         }
     });
+
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed)
         await main(itm);
