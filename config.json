@@ -3,15 +3,14 @@
         "headless": false,
         "ignoreHTTPSErrors": true,
         "args": [
-            "--window-size=460,1280",
+            "--window-size=480,854",
             "--no-sandbox",
             "--disable-setuid-sandbox",
             "--use-gl=egl"
         ]
-        
     },
-    "wid": 460,
-    "hig": 1280,
+    "wid": 480,
+    "hig": 854,
     "speed": 500,
     "pageCount": 5,
     "jeda": 120,
