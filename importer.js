@@ -27,13 +27,15 @@ module.exports = {
     coockies,
     puppeterLoader: async function () {
 
-        if(os.type() === 'Darwin') {
+        if (os.type() === 'Darwin') {
             options.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        }else{
+        } else {
             options.puppeterOptions['headless'] = true
+            // /usr/bin/chromium
+            options.puppeterOptions['executablePath'] = "/usr/bin/chromium"
         }
 
-        const browser = await puppeteer.launch({...options.puppeterOptions });
+        const browser = await puppeteer.launch({ ...options.puppeterOptions });
         const [p] = await browser.pages();
 
         /**@type {ppt.Page} */
