@@ -1,8 +1,11 @@
 const score_update = require('../xupdate/dashboard/score_update');
-const { puppeterLoader, cheerio, puppeteer } = require('./../importer')
+const puppeteer = require('puppeteer')
+const { puppeterLoader, cheerio } = require('./../importer')
 let listHasil = []
 let countIndex = 100;
 let idx = 0;
+
+
 const prisma = new (require('@prisma/client').PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
@@ -14,6 +17,13 @@ async function main(keyword) {
     }
 
     await page.goto(`https://m.youtube.com/results?search_query=${keyword.name}`, { waitUntil: "networkidle2", timeout: 0 })
+    
+    console.log("menyimpaN gambar")
+    await page.screenshot({
+        path: "../public/img/youtube.png",
+        captureBeyondViewport: true
+    })
+
 
     await cobaScroll(page);
 

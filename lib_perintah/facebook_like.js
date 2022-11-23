@@ -14,7 +14,7 @@ const { Prisma } = require("@prisma/client");
 const { execSync } = require("child_process");
 const score_update = require("../xupdate/dashboard/score_update");
 const prisma = new (require("@prisma/client").PrismaClient)();
-const os  = require('os');
+const os = require('os');
 
 /**@type {ppt.Browser} **/
 var browser;
@@ -59,6 +59,13 @@ async function main(keyword) {
     waitUntil: "networkidle2",
     timeout: 0,
   });
+
+  console.log("menyimpan gambar")
+  await page.screenshot({
+    path: "../public/img/facebook.png",
+    captureBeyondViewport: true
+  })
+
 
   console.log("mendapatkan kontent album")
   let cher = cheerio.load(await page.content());

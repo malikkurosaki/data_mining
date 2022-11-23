@@ -19,7 +19,13 @@ async function main(keyword) {
     console.log("page number 1")
     let [a] = await page.$$eval('tbody>td>a', link => link.map(e => e.href));
     await page.goto(a)
-    // let itm in [...new Array(pageCount)]
+    
+    console.log("menyimpan gambar")
+    await page.screenshot({
+        path: "../public/img/google.png",
+        captureBeyondViewport: true
+    })
+
     for (let itm in [...new Array(pageCount)]) {
         let hasilData = await ambilData(page, keyword);
         listHasil = listHasil.concat(hasilData);
