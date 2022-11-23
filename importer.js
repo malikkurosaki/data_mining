@@ -31,7 +31,6 @@ module.exports = {
             options.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         } else {
             options.puppeterOptions['headless'] = true
-            // /usr/bin/chromium
             options.puppeterOptions['executablePath'] = "/usr/bin/chromium"
         }
 

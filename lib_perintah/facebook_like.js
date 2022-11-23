@@ -14,6 +14,7 @@ const { Prisma } = require("@prisma/client");
 const { execSync } = require("child_process");
 const score_update = require("../xupdate/dashboard/score_update");
 const prisma = new (require("@prisma/client").PrismaClient)();
+const os  = require('os');
 
 /**@type {ppt.Browser} **/
 var browser;
@@ -27,6 +28,14 @@ const MODEL_FACEBOOK_LIKE = Prisma.FacebookLikeScalarFieldEnum;
 async function main(keyword) {
   /**@type {MODEL_FACEBOOK_LIKE} */
   let body = {};
+
+  console.log(os.type())
+  if (os.type() === 'Darwin') {
+    config.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  } else {
+    config.puppeterOptions['headless'] = true
+    config.puppeterOptions['executablePath'] = "/usr/bin/chromium"
+  }
 
   if (!page) {
     // init

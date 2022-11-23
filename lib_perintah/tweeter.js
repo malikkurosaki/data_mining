@@ -1,5 +1,5 @@
 const { Prisma } = require("@prisma/client");
-const { puppeterLoader, cheerio } = require("./../importer");
+const { puppeterLoader, cheerio, fs } = require("./../importer");
 const puppeteer = require("puppeteer");
 const { execSync } = require('child_process');
 const score_update = require("../xupdate/dashboard/score_update");
@@ -33,6 +33,12 @@ async function main(keyword) {
         waitUntil: "networkidle2",
         timeout: 0
     });
+
+    console.log("menyimpan script")
+    await page.screenshot({
+        path: "../public/img/twitter.png",
+        
+    })
 
     // gak dipake dulu karena gak mempan dapetnya segitue aja
     // await cobaScroll(page);
