@@ -45,29 +45,61 @@ async function main(keyword) {
             keywordId
         }
 
-        console.log(body)
-        listHasil.push(body);
+        // console.log(body)
+        // listHasil.push(body);
 
-    }
-
-    let listResult = []
-    for (let itm of listHasil) {
         let data = await prisma.youtubeContent.findUnique({
             where: {
-                title: itm.title
+                title: body.title
             }
         })
 
         if (!data) {
             let simpan = await prisma.youtubeContent.create({
-                data: itm
+                data: body
             })
 
-            listResult.push(simpan)
+            let berhasilTitle = await new Promise((resolve, reject) => {
+                setTimeout(async () => {
+
+                    resolve(simpan.title)
+                }, 1000)
+            })
+
+            console.log("simpan data ke server ".green + berhasilTitle)
         }
+
     }
 
-    console.log(`${listResult.length} berhasil disimpan`.green)
+    // let listResult = []
+    // for (let itm of listHasil) {
+    //     let data = await prisma.youtubeContent.findUnique({
+    //         where: {
+    //             title: itm.title
+    //         }
+    //     })
+
+    //     if (!data) {
+    //         let simpan = await prisma.youtubeContent.create({
+    //             data: itm
+    //         })
+
+    //         listResult.push(simpan)
+
+    //         await new Promise((resolve, reject) => {
+    //             setTimeout(async () => {
+
+    //                 resolve()
+    //             }, 1000)
+    //         })
+
+    //         console.log("simpan data ke server")
+    //     }
+
+
+    // }
+
+    // console.log(`${listResult.length} berhasil disimpan`.green)
 
 }
 

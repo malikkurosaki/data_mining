@@ -37,13 +37,6 @@ async function main(keyword) {
 
 
 
-    console.log("menyimpan image")
-    await page.screenshot({
-        path: path.join(__dirname, "../public/img/twitter.png"),
-        fullPage: true
-
-    })
-
     // gak dipake dulu karena gak mempan dapetnya segitue aja
     // await cobaScroll(page);
     console.log("load data content")
@@ -53,16 +46,24 @@ async function main(keyword) {
 
     if (listContent.length < 1) {
         console.log("content tidak ditemukan , tunggu 5 detik ")
+
         await new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve();
-            }, 5000);
+            }, 10000);
 
         })
 
         var $ = cheerio.load(await page.content());
         let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
         console.log("mendapatkan konten sebanyak : " + listContent.length)
+
+        console.log("menyimpan image")
+        await page.screenshot({
+            path: path.join(__dirname, "../public/img/twitter.png"),
+            fullPage: true
+
+        })
     }
 
     console.log("mengurai kontent")
