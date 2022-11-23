@@ -43,6 +43,9 @@ async function main(keyword) {
     const pg = await br.pages();
     browser = br;
     page = pg[0];
+    await page.setUserAgent(
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+    )
   }
 
 
@@ -60,18 +63,13 @@ async function main(keyword) {
     timeout: 0,
   });
 
-  console.log("menyimpan gambar")
-  await page.screenshot({
-    path: "../public/img/facebook.png",
-    captureBeyondViewport: true
-  })
-
-
   console.log("mendapatkan kontent album")
   let cher = cheerio.load(await page.content());
   let photosAlbumLink = cher(
     "#root > div > div > div > div:nth-child(1) > a"
   ).attr("href");
+
+  await ambilGambar()
 
   if (photosAlbumLink) {
     console.log("go to album link");
@@ -110,6 +108,9 @@ async function main(keyword) {
 
       await page.goto(`https://mbasic.facebook.com${link}`);
       let $$ = cheerio.load(await page.content());
+
+      await ambilGambar();
+
       let olah1 = $$("#add_comment_switcher_placeholder")
         .next()
         .find("a")
@@ -144,6 +145,9 @@ async function main(keyword) {
           });
 
           let $$$$ = cheerio.load(await page.content());
+
+          await ambilGambar()
+
           let kotaSaatIni = $$$$(
             "#living > div > div >  div:nth-child(1) > div > table > tbody > tr > td:nth-child(2)"
           ).text();
@@ -181,8 +185,6 @@ async function main(keyword) {
           });
 
           console.log("menyimpan success!".green);
-
-
 
           // tunngu sedetik
           await new Promise((resolve, reject) => {
@@ -256,6 +258,15 @@ async function tunggu(berapa) {
       resolve();
     }, berapa);
   });
+}
+
+async function ambilGambar() {
+  console.log("menyimpan gambar")
+  await page.screenshot({
+    path: "../public/img/facebook.png",
+    captureBeyondViewport: true
+  })
+
 }
 
 run();

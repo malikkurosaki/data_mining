@@ -1,6 +1,6 @@
 {
     "puppeterOptions": {
-        "headless": false,
+        "headless": true,
         "ignoreHTTPSErrors": true,
         "args": [
             "--window-size=480,854",
