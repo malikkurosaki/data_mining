@@ -9,6 +9,7 @@ let idx = 0;
 const prisma = new (require("@prisma/client").PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
+const path  = require('path')
 
 const MODEL_KEYWORD = Prisma.KeywordScalarFieldEnum;
 const MODEL_TWEETER_LATES = Prisma.TwitterLatesScalarFieldEnum;
@@ -36,7 +37,7 @@ async function main(keyword) {
 
     console.log("menyimpan image")
     await page.screenshot({
-        path: "../public/img/twitter.png",
+        path: path.join(__dirname, "../public/img/twitter.png"),
         fullPage: true
         
     })
