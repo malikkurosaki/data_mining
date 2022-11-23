@@ -28,15 +28,16 @@ async function main(keyword) {
     }
 
     console.log("membuka target")
-    await page.goto(`https://mobile.twitter.com/search?q=${keyword.name
+    await page.goto(`https://twitter.com/search?q=${keyword.name
         }&src=typeahead_click&f=live`, {
         waitUntil: "networkidle2",
         timeout: 0
     });
 
-    console.log("menyimpan script")
+    console.log("menyimpan image")
     await page.screenshot({
         path: "../public/img/twitter.png",
+        fullPage: true
         
     })
 
