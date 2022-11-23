@@ -9,7 +9,7 @@ let idx = 0;
 const prisma = new (require("@prisma/client").PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
-const path  = require('path')
+const path = require('path')
 
 const MODEL_KEYWORD = Prisma.KeywordScalarFieldEnum;
 const MODEL_TWEETER_LATES = Prisma.TwitterLatesScalarFieldEnum;
@@ -35,19 +35,35 @@ async function main(keyword) {
         timeout: 0
     });
 
+
+
     console.log("menyimpan image")
     await page.screenshot({
         path: path.join(__dirname, "../public/img/twitter.png"),
         fullPage: true
-        
+
     })
 
     // gak dipake dulu karena gak mempan dapetnya segitue aja
     // await cobaScroll(page);
     console.log("load data content")
-    let $ = cheerio.load(await page.content());
+    var $ = cheerio.load(await page.content());
     let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
     console.log("mendapatkan konten sebanyak : " + listContent.length)
+
+    if (listContent.length < 1) {
+        console.log("content tidak ditemukan , tunggu 5 detik ")
+        await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 5000);
+
+        })
+
+        var $ = cheerio.load(await page.content());
+        let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
+        console.log("mendapatkan konten sebanyak : " + listContent.length)
+    }
 
     console.log("mengurai kontent")
     for (let itm of listContent) {
