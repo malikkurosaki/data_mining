@@ -68,7 +68,9 @@ main();
 module.exports = async function () {
     main();
 
-    console.log("masukkan perintahnya".green)
+    console.log(`masukkan perintahnya 
+    1. simpan
+    `.green)
     process.stdin.on("data", async (data) => {
         let perintah = `${data}`.trim();
         if (perintah == "simpan") {
