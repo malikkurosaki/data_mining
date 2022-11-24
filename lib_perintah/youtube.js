@@ -1,8 +1,7 @@
 const score_update = require('../xupdate/dashboard/score_update');
 const puppeteer = require('puppeteer')
 const { puppeterLoader, cheerio } = require('./../importer');
-const showImg = require('../func/img');
-
+const scrn = require('../func/scrn')
 let listHasil = []
 let countIndex = 100;
 let idx = 0;
@@ -18,14 +17,13 @@ async function main(keyword) {
     }
 
     await page.goto(`https://m.youtube.com/results?search_query=${keyword.name}`, { waitUntil: "networkidle2", timeout: 0 })
-
-    await imageConsole()
-
+    await scrn.ytb().shoot(page)
 
 
-
-    // //*[@id="app"]/div[1]/ytm-search/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-compact-video-renderer
+    console.log("get data content ".grey)
     let content = await page.$x('//*[@id="app"]/div[1]/ytm-search/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-compact-video-renderer');
+
+    console.log(content.length < 1 ? "no content found".red : "has " + content.length + " to process".cyan);
 
     for (let el of content) {
         let con = await page.evaluate((e) => {
@@ -62,6 +60,7 @@ async function main(keyword) {
         })
 
         if (!data) {
+            console.log("try save data ...".yellow)
             let simpan = await prisma.youtubeContent.create({
                 data: body
             })
@@ -73,40 +72,12 @@ async function main(keyword) {
                 }, 1000)
             })
 
-            console.log("simpan data ke server ".green + berhasilTitle)
+            console.log("save data success ".green + berhasilTitle)
+        } else {
+            console.log("duplicated data will no procccess".grey)
         }
 
     }
-
-    // let listResult = []
-    // for (let itm of listHasil) {
-    //     let data = await prisma.youtubeContent.findUnique({
-    //         where: {
-    //             title: itm.title
-    //         }
-    //     })
-
-    //     if (!data) {
-    //         let simpan = await prisma.youtubeContent.create({
-    //             data: itm
-    //         })
-
-    //         listResult.push(simpan)
-
-    //         await new Promise((resolve, reject) => {
-    //             setTimeout(async () => {
-
-    //                 resolve()
-    //             }, 1000)
-    //         })
-
-    //         console.log("simpan data ke server")
-    //     }
-
-
-    // }
-
-    // console.log(`${listResult.length} berhasil disimpan`.green)
 
 }
 
@@ -128,11 +99,14 @@ async function cobaScroll(page) {
 
 async function run() {
 
+    console.log("get list target ...".gray)
     const keyword = await prisma.keyword.findMany({
         orderBy: {
             idx: "asc"
         }
     });
+
+    console.log("get list target " + keyword.length)
 
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed)
@@ -147,13 +121,6 @@ async function run() {
     await score_update();
 }
 
-async function imageConsole() {
-    await page.screenshot({
-        path: "../public/img/youtube.png",
-        captureBeyondViewport: true
-    })
-    showImg("../public/img/youtube.png")
-}
 
 run();
 
