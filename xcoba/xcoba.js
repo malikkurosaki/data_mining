@@ -1,14 +1,9 @@
-const puppeteer = require('puppeteer');
+const term = require('terimg');
 
-(async () => {
-  const browser = await puppeteer.launch({
-    headless: true
-  });
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  // await page.screenshot({path: 'example.png'});
+function main() {
+  term("./public/img/youtube.png", {height: 50}).then(console.log)
 
-  await browser.close();
-  console.log("ok docki")
-  
-})();
+}
+
+
+main();

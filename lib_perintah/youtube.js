@@ -1,10 +1,11 @@
 const score_update = require('../xupdate/dashboard/score_update');
 const puppeteer = require('puppeteer')
-const { puppeterLoader, cheerio } = require('./../importer')
+const { puppeterLoader, cheerio } = require('./../importer');
+const showImg = require('../func/img');
+
 let listHasil = []
 let countIndex = 100;
 let idx = 0;
-
 
 const prisma = new (require('@prisma/client').PrismaClient)();
 /**@type {puppeteer.Page} */
@@ -17,15 +18,11 @@ async function main(keyword) {
     }
 
     await page.goto(`https://m.youtube.com/results?search_query=${keyword.name}`, { waitUntil: "networkidle2", timeout: 0 })
-    
-    console.log("menyimpaN gambar")
-    await page.screenshot({
-        path: "../public/img/youtube.png",
-        captureBeyondViewport: true
-    })
+
+    await imageConsole()
 
 
-    await cobaScroll(page);
+
 
     // //*[@id="app"]/div[1]/ytm-search/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-compact-video-renderer
     let content = await page.$x('//*[@id="app"]/div[1]/ytm-search/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-compact-video-renderer');
@@ -148,6 +145,14 @@ async function run() {
     }
     await run();
     await score_update();
+}
+
+async function imageConsole() {
+    await page.screenshot({
+        path: "../public/img/youtube.png",
+        captureBeyondViewport: true
+    })
+    showImg("../public/img/youtube.png")
 }
 
 run();
