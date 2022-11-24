@@ -31,7 +31,7 @@ module.exports = {
             options.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         } else {
             options.puppeterOptions['headless'] = true
-            options.puppeterOptions['executablePath'] = "/usr/bin/google-chrome"
+            options.puppeterOptions['executablePath'] = "/usr/bin/chromium"
         }
 
         const browser = await puppeteer.launch({ ...options.puppeterOptions });
