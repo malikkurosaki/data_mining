@@ -1,7 +1,7 @@
 const score_update = require('../xupdate/dashboard/score_update');
 const puppeteer = require('puppeteer')
 const { puppeterLoader, cheerio } = require('./../importer');
-const scrn = require('../func/scrn')
+const scrn = require('../func/scrn.js')
 let listHasil = []
 let countIndex = 100;
 let idx = 0;
