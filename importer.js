@@ -30,8 +30,9 @@ module.exports = {
         if (os.type() === 'Darwin') {
             options.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         } else {
+            // /usr/bin/google-chrome
             options.puppeterOptions['headless'] = true
-            options.puppeterOptions['executablePath'] = "/usr/bin/chromium"
+            options.puppeterOptions['executablePath'] = "/usr/bin/google-chrome"
         }
 
         const browser = await puppeteer.launch({ ...options.puppeterOptions });
@@ -47,10 +48,10 @@ module.exports = {
             deviceScaleFactor: 1,
         });
 
-        await page.setUserAgent(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-        )
-
+        // await page.setUserAgent(
+        //     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+        // )
+        
         return {
             browser,
             page,
