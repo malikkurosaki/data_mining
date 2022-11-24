@@ -81,12 +81,14 @@ async function main(keyword) {
             duplicated++;
         }
 
-        console.log('------------------------------------------------')
-        console.log("data saved :" + saved)
-        console.log("data duplicated :" + duplicated)
-        console.log('------------------------------------------------')
 
     }
+
+    console.log('------------------------------------------------')
+    console.log("data saved :" + saved)
+    console.log("data duplicated :" + duplicated)
+    console.log('------------------------------------------------')
+
 
 }
 
