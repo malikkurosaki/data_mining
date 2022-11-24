@@ -19,7 +19,7 @@ async function main(keyword) {
     console.log("page number 1")
     let [a] = await page.$$eval('tbody>td>a', link => link.map(e => e.href));
     await page.goto(a)
-    
+
     console.log("menyimpan gambar")
     await page.screenshot({
         path: "../public/img/google.png",
@@ -58,7 +58,9 @@ async function main(keyword) {
         }
     }
 
+    console.log("--------------------------------")
     console.log(`${listResult.length} berhasil disimpan`.green)
+    console.log("--------------------------------")
     // await browser.close();
 
 }
