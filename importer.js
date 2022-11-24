@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const pluginStealth = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(pluginStealth());
-const options = require('./config.json');
+const config = require('./config.json');
 const coockies = require('./cookies.json');
 const os = require('os');
 
@@ -23,19 +23,19 @@ module.exports = {
     colors,
     fs,
     path,
-    options,
+    options: config,
     coockies,
     puppeterLoader: async function () {
 
         if (os.type() === 'Darwin') {
-            options.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            config.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         } else {
             // /usr/bin/google-chrome
-            options.puppeterOptions['headless'] = true
-            options.puppeterOptions['executablePath'] = "/usr/bin/google-chrome"
+            config.puppeterOptions['headless'] = true
+            config.puppeterOptions['executablePath'] = "/usr/bin/google-chrome"
         }
 
-        const browser = await puppeteer.launch({ ...options.puppeterOptions });
+        const browser = await puppeteer.launch({ ...config.puppeterOptions });
         const [p] = await browser.pages();
 
         /**@type {ppt.Page} */
@@ -43,8 +43,8 @@ module.exports = {
         await page.setCookie(...coockies)
         await page.emulate(ppt.KnownDevices['Nokia N9']);
         await page.setViewport({
-            width: options.wid,
-            height: options.hig,
+            width: config.wid,
+            height: config.hig,
             deviceScaleFactor: 1,
         });
 

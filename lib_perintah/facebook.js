@@ -56,13 +56,16 @@ const pluginStealth = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(pluginStealth());
 const config = require('../config.json');
 const coockies = require('../cookies.json');
+const os = require('os');
 
 async function main() {
     
-    if(os.type() === 'Darwin') {
+    if (os.type() === 'Darwin') {
         config.puppeterOptions['executablePath'] = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    }else{
+    } else {
+        // /usr/bin/google-chrome
         config.puppeterOptions['headless'] = true
+        config.puppeterOptions['executablePath'] = "/usr/bin/google-chrome"
     }
 
     const browser = await puppeteer.launch(config.puppeterOptions);
