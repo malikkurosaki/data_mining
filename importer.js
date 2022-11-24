@@ -12,7 +12,7 @@ const config = require('./config.json');
 const coockies = require('./cookies.json');
 const os = require('os');
 
-console.log(os.type())
+console.log("App Run On : ".green + os.type())
 
 // "executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 module.exports = {
@@ -35,6 +35,7 @@ module.exports = {
             config.puppeterOptions['executablePath'] = "/usr/bin/google-chrome"
         }
 
+        console.log("init machine".yellow)
         const browser = await puppeteer.launch({ ...config.puppeterOptions });
         const [p] = await browser.pages();
 
@@ -51,7 +52,7 @@ module.exports = {
         // await page.setUserAgent(
         //     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
         // )
-        
+
         return {
             browser,
             page,
