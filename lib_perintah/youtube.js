@@ -25,6 +25,8 @@ async function main(keyword) {
 
     console.log(content.length < 1 ? "no content found".red : "has " + content.length + " to process".cyan);
 
+    let saved = 0;
+    let duplicated = 0;
     for (let el of content) {
         let con = await page.evaluate((e) => {
             return e.innerHTML;
@@ -73,9 +75,16 @@ async function main(keyword) {
             })
 
             console.log("save data success ".green + berhasilTitle)
+            saved++;
         } else {
             // console.log("duplicated data will no procccess".grey)
+            duplicated++;
         }
+
+        console.log('------------------------------------------------')
+        console.log("data saved :" + saved)
+        console.log("data duplicated :" + duplicated)
+        console.log('------------------------------------------------')
 
     }
 
