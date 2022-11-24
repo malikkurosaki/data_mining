@@ -74,7 +74,7 @@ async function main(keyword) {
 
             console.log("save data success ".green + berhasilTitle)
         } else {
-            console.log("duplicated data will no procccess".grey)
+            // console.log("duplicated data will no procccess".grey)
         }
 
     }
