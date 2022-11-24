@@ -131,7 +131,7 @@ async function run() {
         // execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
     }
     await run()
-    await score_update()
+    // await score_update()
 }
 
 run()

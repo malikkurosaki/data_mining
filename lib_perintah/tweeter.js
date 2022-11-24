@@ -191,7 +191,7 @@ async function run() {
     }
 
     await run();
-    await score_update()
+    // await score_update()
     // console.log("update date ke server ...".bgYellow)
     // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 }

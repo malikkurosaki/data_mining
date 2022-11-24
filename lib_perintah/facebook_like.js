@@ -239,12 +239,12 @@ async function run() {
     console.log("search to : " + itm.name.toString().bgGreen);
     await main(itm);
     // update ke server
-    console.log("update date ke server ...".bgYellow)
-    execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
+    // console.log("update date ke server ...".bgYellow)
+    // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 
   }
   await run();
-  await score_update()
+  // await score_update()
 
   // mengupdate ke server
   // console.log("update date ke server ...".bgYellow)

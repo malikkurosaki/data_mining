@@ -129,7 +129,7 @@ async function run() {
         })
     }
     await run();
-    await score_update();
+    // await score_update();
 }
 
 
