@@ -45,7 +45,7 @@ async function main(keyword) {
     let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
     console.log("mendapatkan konten sebanyak : " + listContent.length)
 
-    scrn.twt().shoot()
+    scrn.twt().shoot(page)
 
     if (listContent.length < 1) {
         console.log("content tidak ditemukan , tunggu 5 detik ")
@@ -61,7 +61,7 @@ async function main(keyword) {
         let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
         console.log("mendapatkan konten sebanyak : " + listContent.length)
 
-        scrn.twt().shoot()
+        scrn.twt().shoot(page)
     }
 
     console.log("mengurai kontent")
@@ -130,7 +130,7 @@ async function main(keyword) {
         })
         console.log("menyimpan success!".green);
         console.log("total : " + await prisma.twitterLates.count())
-        scrn.twt().shoot()
+        scrn.twt().shoot(page)
     }
 
 
@@ -145,7 +145,7 @@ async function run() {
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed);
         await main(itm);
-        scrn.twt().shoot()
+        scrn.twt().shoot(page)
     }
 
     await run();
