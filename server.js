@@ -13,8 +13,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/gambar/:nama', (req, res) => {
-    const gambar = fs.readFileSync(path.join(__dirname, `/public/img/${req.params.nama}.png`))
-    res.type("image/png").status(200).send(gambar.toString("base64"))
+    if (fs.existsSync(path.join(__dirname, `/public/img/${req.params.nama}.png`))) {
+        const gambar = fs.readFileSync(path.join(__dirname, `/public/img/${req.params.nama}.png`))
+        res.type("image/png").status(200).send(gambar.toString("base64"))
+    } else {
+        const gambar = fs.readFileSync(path.join(__dirname, `/public/img/default.png`))
+        res.type("image/png").status(200).send(gambar.toString("base64"))
+    }
 })
 
 // const dir = './api_controller';
