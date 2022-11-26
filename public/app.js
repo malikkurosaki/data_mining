@@ -15,5 +15,6 @@ setInterval(() => {
         $("#twt").attr("src", `data:image/png;base64, ${val}`)
     })
 
+    $("#wkt").html((new Date()).toLocaleString())
     console.log("update")
 }, 2000);

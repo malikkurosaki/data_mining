@@ -12,6 +12,16 @@ var page;
 const path = require('path')
 const scrn = require('../func/scrn')
 
+setInterval(() => {
+    if (page) {
+        try {
+            scrn.twt().shoot(page)
+        } catch (error) {
+            console.log("error saat ambil gambar")
+        }
+    }
+}, 2000)
+
 const MODEL_KEYWORD = Prisma.KeywordScalarFieldEnum;
 const MODEL_TWEETER_LATES = Prisma.TwitterLatesScalarFieldEnum;
 
@@ -38,6 +48,8 @@ async function main(keyword) {
         timeout: 0
     });
 
+
+
     // gak dipake dulu karena gak mempan dapetnya segitue aja
     // await cobaScroll(page);
     console.log("load data content")
@@ -45,7 +57,7 @@ async function main(keyword) {
     let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
     console.log("mendapatkan konten sebanyak : " + listContent.length)
 
-    scrn.twt().shoot(page)
+
 
     if (listContent.length < 1) {
         console.log("content tidak ditemukan , tunggu 5 detik ")
@@ -61,7 +73,7 @@ async function main(keyword) {
         let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
         console.log("mendapatkan konten sebanyak : " + listContent.length)
 
-        scrn.twt().shoot(page)
+
     }
 
     console.log("mengurai kontent")
@@ -102,6 +114,8 @@ async function main(keyword) {
             timeout: 0
         });
 
+
+
         const $$ = cheerio.load(await page.content());
 
         // isian db
@@ -130,7 +144,7 @@ async function main(keyword) {
         })
         console.log("menyimpan success!".green);
         console.log("total : " + await prisma.twitterLates.count())
-        scrn.twt().shoot(page)
+
     }
 
 
@@ -145,7 +159,7 @@ async function run() {
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed);
         await main(itm);
-        scrn.twt().shoot(page)
+
     }
 
     await run();

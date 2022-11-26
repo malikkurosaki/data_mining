@@ -7,6 +7,16 @@ const scrn = require('../func/scrn');
 /**@type {puppeteer.page} */
 var page;
 
+setInterval(() => {
+    if (page) {
+        try {
+            scrn.ggl().shoot(page)
+        } catch (error) {
+            console.log("error saat ambil gambar")
+        }
+    }
+}, 2000)
+
 async function main(keyword) {
     if (page === undefined) {
         const { page: pg } = await puppeterLoader();
@@ -15,13 +25,13 @@ async function main(keyword) {
 
     // menuju target
     await page.goto(`https://www.google.com/search?q=${keyword.name}&source=lnms&tbm=nws`, { waitUntil: "networkidle2", timeout: 0 });
-    scrn.ggl().shoot(page)
+
     // pengambilan data
     let listHasil = await ambilData(page, keyword);
     console.log("page number 1")
     let [a] = await page.$$eval('tbody>td>a', link => link.map(e => e.href));
     await page.goto(a)
-    scrn.ggl().shoot(page)
+
 
     for (let itm in [...new Array(pageCount)]) {
         let hasilData = await ambilData(page, keyword);
@@ -34,7 +44,7 @@ async function main(keyword) {
         console.log(targetPage.toString().cyan)
         console.log("page number: " + (Number(itm) + 2).toString())
         await page.goto(targetPage)
-        scrn.ggl().shoot(page)
+
     }
 
 
@@ -58,7 +68,7 @@ async function main(keyword) {
     console.log("--------------------------------")
     console.log(`${listResult.length} berhasil disimpan`.green)
     console.log("--------------------------------")
-    scrn.ggl().shoot(page)
+
 
 }
 
@@ -107,7 +117,7 @@ async function ambilData(page, keyword) {
 
     }
 
-    scrn.ggl().shoot(page)
+
     return listHasil;
 }
 

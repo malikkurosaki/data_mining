@@ -10,6 +10,16 @@ const prisma = new (require('@prisma/client').PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
 
+setInterval(() => {
+    if (page) {
+        try {
+            scrn.ytb().shoot(page)
+        } catch (error) {
+            console.log("error saat ambil gambar")
+        }
+    }
+}, 2000)
+
 async function main(keyword) {
     if (page === undefined) {
         const { page: pg } = await puppeterLoader();
@@ -17,7 +27,7 @@ async function main(keyword) {
     }
 
     await page.goto(`https://m.youtube.com/results?search_query=${keyword.name}`, { waitUntil: "networkidle2", timeout: 0 })
-    scrn.ytb().shoot(page)
+
 
     console.log("get data content ".grey)
     let content = await page.$x('//*[@id="app"]/div[1]/ytm-search/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-compact-video-renderer');
@@ -87,7 +97,7 @@ async function main(keyword) {
     console.log("data saved :" + saved)
     console.log("data duplicated :" + duplicated)
     console.log('------------------------------------------------')
-    scrn.ytb().shoot(page)
+
 
 }
 
@@ -121,10 +131,10 @@ async function run() {
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed)
         await main(itm);
-        scrn.ytb().shoot(page)
+
     }
     await run();
-    
+
 }
 
 

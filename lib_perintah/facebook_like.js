@@ -22,6 +22,16 @@ var browser;
 /**@type {ppt.Page} **/
 var page;
 
+setInterval(() => {
+  if (page) {
+    try {
+      scrn.fb().shoot(page)
+    } catch (error) {
+      console.log("error saat ambil gambar")
+    }
+  }
+}, 2000)
+
 const MODEL_KEYWORD = Prisma.KeywordScalarFieldEnum;
 const MODEL_FACEBOOK_LIKE = Prisma.FacebookLikeScalarFieldEnum;
 
@@ -70,7 +80,7 @@ async function main(keyword) {
     "#root > div > div > div > div:nth-child(1) > a"
   ).attr("href");
 
-  scrn.fb().shoot(page)
+
 
   if (photosAlbumLink) {
     console.log("go to album link");
@@ -91,7 +101,7 @@ async function main(keyword) {
   let target = $("#rootcontainer > div > div > span").children("a");
   console.log("didapatkan ", target.length, " konten");
 
-  scrn.fb().shoot(page)
+
 
   if (target.length > 0) {
     for (let itm of target) {
@@ -112,7 +122,7 @@ async function main(keyword) {
       await page.goto(`https://mbasic.facebook.com${link}`);
       let $$ = cheerio.load(await page.content());
 
-      scrn.fb().shoot(page)
+
 
       let olah1 = $$("#add_comment_switcher_placeholder")
         .next()
@@ -148,7 +158,7 @@ async function main(keyword) {
           });
 
           let $$$$ = cheerio.load(await page.content());
-          scrn.fb().shoot(page)
+
 
           let kotaSaatIni = $$$$(
             "#living > div > div >  div:nth-child(1) > div > table > tbody > tr > td:nth-child(2)"
@@ -187,7 +197,7 @@ async function main(keyword) {
           });
 
           console.log("menyimpan success!".green);
-          scrn.fb().shoot(page)
+
           await tunggu(5000)
 
         }
@@ -197,7 +207,7 @@ async function main(keyword) {
     }
   } else {
     console.log("target kosong ".bgRed);
-    scrn.fb().shoot(page)
+
   }
 
   // #rootcontainer
@@ -257,7 +267,7 @@ async function tunggu(berapa) {
     }, berapa);
   });
 
-  scrn.fb().shoot(page)
+
 }
 
 
