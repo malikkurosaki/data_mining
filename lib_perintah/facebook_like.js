@@ -192,8 +192,13 @@ async function main(keyword) {
               resolve();
             }, 1000);
           });
+
+          await tunggu(5000)
+
         }
       }
+
+      await tunggu(5000)
     }
   } else {
     console.log("target kosong ".bgRed);
@@ -204,7 +209,7 @@ async function main(keyword) {
 
 /**@param {ppt.Page} page */
 async function clickSelengkapnya(page) {
-  await tunggu(2000);
+  await tunggu(5000);
   let selengkapnya = await page.$("#reaction_profile_pager");
 
   try {
@@ -224,10 +229,12 @@ async function cobaScroll(page) {
     await page.evaluate(() => {
       window.scrollTo(0, window.document.body.scrollHeight);
     });
-    await tunggu(1000);
+    await tunggu(5000);
   }
 }
 
+
+// menjalankan otomisasi
 async function run() {
   const keyword = await prisma.keyword.findMany({
     orderBy: {
@@ -238,28 +245,27 @@ async function run() {
   for (let itm of keyword) {
     console.log("search to : " + itm.name.toString().bgGreen);
     await main(itm);
-    // update ke server
-    // console.log("update date ke server ...".bgYellow)
-    // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
-
+    await tunggu(5000);
   }
   await run();
-  // await score_update()
-
-  // mengupdate ke server
-  // console.log("update date ke server ...".bgYellow)
-  // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 }
 
+
+// menunggu atau memperlambat proses untuk menhindari deteksi akun ban
 /**@param {number} berapa */
 async function tunggu(berapa) {
+  console.log(`menghindari deteksi tunggu ${berapa} ...`)
   await new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
     }, berapa);
   });
+
+
 }
 
+
+// menyimpan gambar pada folder public
 async function ambilGambar() {
   console.log("menyimpan gambar")
   await page.screenshot({
