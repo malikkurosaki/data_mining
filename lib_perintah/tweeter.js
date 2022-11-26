@@ -10,6 +10,7 @@ const prisma = new (require("@prisma/client").PrismaClient)();
 /**@type {puppeteer.Page} */
 var page;
 const path = require('path')
+const scrn = require('../func/scrn')
 
 const MODEL_KEYWORD = Prisma.KeywordScalarFieldEnum;
 const MODEL_TWEETER_LATES = Prisma.TwitterLatesScalarFieldEnum;
@@ -44,6 +45,8 @@ async function main(keyword) {
     let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
     console.log("mendapatkan konten sebanyak : " + listContent.length)
 
+    scrn.twt().shoot()
+
     if (listContent.length < 1) {
         console.log("content tidak ditemukan , tunggu 5 detik ")
 
@@ -58,12 +61,7 @@ async function main(keyword) {
         let listContent = $("main > div > div > div > div > div > div:nth-child(3) > div > section > div > div").children();
         console.log("mendapatkan konten sebanyak : " + listContent.length)
 
-        console.log("menyimpan image")
-        await page.screenshot({
-            path: path.join(__dirname, "../public/img/twitter.png"),
-            fullPage: true
-
-        })
+        scrn.twt().shoot()
     }
 
     console.log("mengurai kontent")
@@ -132,43 +130,11 @@ async function main(keyword) {
         })
         console.log("menyimpan success!".green);
         console.log("total : " + await prisma.twitterLates.count())
-
+        scrn.twt().shoot()
     }
 
 
-    // console.log("coba menyimpan ....".yellow)
-    // for (let itm of listHasil) {
-    //     try {
-    //         await prisma.twitterLates.create({
-    //           data: {
-
-    //           }
-    //         })
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-
-    //     return
-    // }
-    // console.log("menyimpan berhasil!".green)
-
-    // #react-root > div > div > div.css-1dbjc4n.r-18u37iz.r-13qz1uu.r-417010 > main > div > div > div > div > div > div:nth-child(3) > div > section > div
 }
-
-// /**@param {puppeteer.Page} page*/
-// async function cobaScroll(page) {
-//     for (let i in [...new Array(10)]) {
-//         console.log("scrolling...");
-//         await page.evaluate(() => {
-//             window.scrollTo(0, window.document.body.scrollHeight);
-//         });
-//         await new Promise((resolve, reject) => {
-//             setTimeout(() => {
-//                 resolve();
-//             }, 1000);
-//         });
-//     }
-// }
 
 async function run() {
     const keyword = await prisma.keyword.findMany({
@@ -179,21 +145,10 @@ async function run() {
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed);
         await main(itm);
-
-        // await prisma.collectCount.create({
-        //     data: {
-        //         keywordId: itm.id
-        //     }
-        // });
-
-        // mengupdate ke server
-
+        scrn.twt().shoot()
     }
 
     await run();
-    // await score_update()
-    // console.log("update date ke server ...".bgYellow)
-    // execSync('node score.js', { stdio: "inherit", cwd: "../xupdate/dashboard" })
 }
 
 run();

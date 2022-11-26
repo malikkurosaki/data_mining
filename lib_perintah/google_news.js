@@ -3,6 +3,7 @@ const { puppeterLoader, cheerio, colors, puppeteer } = require('../importer')
 const prisma = new (require('@prisma/client').PrismaClient)();
 const { speed, pageCount } = require('../config.json');
 const score_update = require('../xupdate/dashboard/score_update');
+const scrn = require('../func/scrn');
 /**@type {puppeteer.page} */
 var page;
 
@@ -14,17 +15,13 @@ async function main(keyword) {
 
     // menuju target
     await page.goto(`https://www.google.com/search?q=${keyword.name}&source=lnms&tbm=nws`, { waitUntil: "networkidle2", timeout: 0 });
+    scrn.ggl().shoot(page)
     // pengambilan data
     let listHasil = await ambilData(page, keyword);
     console.log("page number 1")
     let [a] = await page.$$eval('tbody>td>a', link => link.map(e => e.href));
     await page.goto(a)
-
-    console.log("menyimpan gambar")
-    await page.screenshot({
-        path: "../public/img/google.png",
-        captureBeyondViewport: true
-    })
+    scrn.ggl().shoot(page)
 
     for (let itm in [...new Array(pageCount)]) {
         let hasilData = await ambilData(page, keyword);
@@ -37,7 +34,7 @@ async function main(keyword) {
         console.log(targetPage.toString().cyan)
         console.log("page number: " + (Number(itm) + 2).toString())
         await page.goto(targetPage)
-
+        scrn.ggl().shoot(page)
     }
 
 
@@ -61,7 +58,7 @@ async function main(keyword) {
     console.log("--------------------------------")
     console.log(`${listResult.length} berhasil disimpan`.green)
     console.log("--------------------------------")
-    // await browser.close();
+    scrn.ggl().shoot(page)
 
 }
 
@@ -110,6 +107,7 @@ async function ambilData(page, keyword) {
 
     }
 
+    scrn.ggl().shoot(page)
     return listHasil;
 }
 
@@ -122,26 +120,12 @@ async function run() {
     for (let itm of keyword) {
         console.log("search to : " + itm.name.toString().bgRed)
         await main(itm);
-        // await prisma.collectCount.create({
-        //     data: {
-        //         keywordId: itm.id
-        //     }
-        // })
-        // console.log("update date ke server ...".bgYellow)
-        // execSync('node score.js', {stdio: "inherit", cwd: "../xupdate/dashboard"})
     }
     await run()
-    // await score_update()
 }
 
 run()
 
-
-// setInterval(async () => {
-//     await run()
-//     let waktu = jeda * 1000
-
-// }, jeda * 1000)
 
 
 

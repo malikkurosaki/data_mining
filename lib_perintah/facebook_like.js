@@ -15,6 +15,7 @@ const { execSync } = require("child_process");
 const score_update = require("../xupdate/dashboard/score_update");
 const prisma = new (require("@prisma/client").PrismaClient)();
 const os = require('os');
+const scrn = require('../func/scrn')
 
 /**@type {ppt.Browser} **/
 var browser;
@@ -69,7 +70,7 @@ async function main(keyword) {
     "#root > div > div > div > div:nth-child(1) > a"
   ).attr("href");
 
-  await ambilGambar()
+  scrn.fb().shoot(page)
 
   if (photosAlbumLink) {
     console.log("go to album link");
@@ -90,6 +91,8 @@ async function main(keyword) {
   let target = $("#rootcontainer > div > div > span").children("a");
   console.log("didapatkan ", target.length, " konten");
 
+  scrn.fb().shoot(page)
+
   if (target.length > 0) {
     for (let itm of target) {
       let link = $(itm).attr("href");
@@ -109,7 +112,7 @@ async function main(keyword) {
       await page.goto(`https://mbasic.facebook.com${link}`);
       let $$ = cheerio.load(await page.content());
 
-      await ambilGambar();
+      scrn.fb().shoot(page)
 
       let olah1 = $$("#add_comment_switcher_placeholder")
         .next()
@@ -145,8 +148,7 @@ async function main(keyword) {
           });
 
           let $$$$ = cheerio.load(await page.content());
-
-          await ambilGambar()
+          scrn.fb().shoot(page)
 
           let kotaSaatIni = $$$$(
             "#living > div > div >  div:nth-child(1) > div > table > tbody > tr > td:nth-child(2)"
@@ -185,14 +187,7 @@ async function main(keyword) {
           });
 
           console.log("menyimpan success!".green);
-
-          // tunngu sedetik
-          await new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-            }, 1000);
-          });
-
+          scrn.fb().shoot(page)
           await tunggu(5000)
 
         }
@@ -202,6 +197,7 @@ async function main(keyword) {
     }
   } else {
     console.log("target kosong ".bgRed);
+    scrn.fb().shoot(page)
   }
 
   // #rootcontainer
@@ -261,18 +257,10 @@ async function tunggu(berapa) {
     }, berapa);
   });
 
-
+  scrn.fb().shoot(page)
 }
 
 
-// menyimpan gambar pada folder public
-async function ambilGambar() {
-  console.log("menyimpan gambar")
-  await page.screenshot({
-    path: "../public/img/facebook.png",
-    captureBeyondViewport: true
-  })
 
-}
 
 run();

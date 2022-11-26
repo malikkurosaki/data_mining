@@ -12,17 +12,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const dir = './api_controller';
-const apiDir = fs.readdirSync(path.join(__dirname, dir));
+app.get('/gambar/:nama', (req, res) => {
+    const gambar = fs.readFileSync(path.join(__dirname, `/public/img/${req.params.nama}.png`))
+    res.type("image/png").status(200).send(gambar.toString("base64"))
+})
 
-for (let subDir of apiDir) {
-    let targetDir = fs.readdirSync(path.join(__dirname, dir, subDir));
-    for (let targetFile of targetDir) {
-        const name = path.parse(targetFile).name
-        const method = name.split('_')[0]
-        const target = path.join(__dirname, dir, subDir, targetFile);
-        app[method](`/api/${_.kebabCase(name)}`, require(target));
-    }
-}
+// const dir = './api_controller';
+// const apiDir = fs.readdirSync(path.join(__dirname, dir));
+
+// for (let subDir of apiDir) {
+//     let targetDir = fs.readdirSync(path.join(__dirname, dir, subDir));
+//     for (let targetFile of targetDir) {
+//         const name = path.parse(targetFile).name
+//         const method = name.split('_')[0]
+//         const target = path.join(__dirname, dir, subDir, targetFile);
+//         app[method](`/api/${_.kebabCase(name)}`, require(target));
+//     }
+// }
 
 app.listen(PORT, () => console.log('listening on port '.green + PORT));

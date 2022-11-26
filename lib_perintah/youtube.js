@@ -17,8 +17,7 @@ async function main(keyword) {
     }
 
     await page.goto(`https://m.youtube.com/results?search_query=${keyword.name}`, { waitUntil: "networkidle2", timeout: 0 })
-    await scrn.ytb().shoot(page)
-
+    scrn.ytb().shoot(page)
 
     console.log("get data content ".grey)
     let content = await page.$x('//*[@id="app"]/div[1]/ytm-search/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-compact-video-renderer');
@@ -88,7 +87,7 @@ async function main(keyword) {
     console.log("data saved :" + saved)
     console.log("data duplicated :" + duplicated)
     console.log('------------------------------------------------')
-
+    scrn.ytb().shoot(page)
 
 }
 
@@ -122,14 +121,10 @@ async function run() {
     for (let itm of keyword) {
         console.log("search for " + itm.name.toString().bgRed)
         await main(itm);
-        await prisma.collectCount.create({
-            data: {
-                keywordId: itm.id
-            }
-        })
+        scrn.ytb().shoot(page)
     }
     await run();
-    // await score_update();
+    
 }
 
 
