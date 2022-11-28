@@ -21,16 +21,16 @@
             <div id="wkt" class="h4 text-light"></div>
         </div>
         <div id="main" class="row p-4 bg-dark">
-            <div class="p-2 col-sm-6 col-md text-light bg-dark  border ">
+            <div class="p-2 col-sm-6 col-md text-info bg-dark  border ">
                 <small id="ytb"></small>
             </div>
-            <div class="p-2 col-sm-6 col-md text-light bg-dark border ">
+            <div class="p-2 col-sm-6 col-md text-info bg-dark border ">
                 <small id="ggl" ></small>
             </div>
-            <div class="p-2 col-sm-6 col-md text-light bg-dark  border ">
+            <div class="p-2 col-sm-6 col-md text-info bg-dark  border ">
                 <small id="fb"></small>
             </div>
-            <div class="p-2 col-sm-6 col-md text-light bg-dark  border ">
+            <div class="p-2 col-sm-6 col-md text-info bg-dark  border ">
                 <small id="twt"></small>
             </div>
         </div>
@@ -40,16 +40,16 @@
 
     setInterval(() => {
         $.get('/api/terminal?name=ggle').then(val => {
-            $("#ggl").html(val);
+            $("#ggl").html(val.join("<br />"));
         })
         $.get('/api/terminal?name=ytb').then(val => {
-            $("#ytb").html(val)
+            $("#ytb").html(val.join("<br />"))
         })
         $.get('/api/terminal?name=fb').then(val => {
-            $("#fb").html(val)
+            $("#fb").html(val.join("<br />"))
         })
         $.get('/api/terminal?name=twit').then(val => {
-            $("#twt").html(val)
+            $("#twt").html(val.join("<br />"))
         })
 
         $("#wkt").html((new Date()).toLocaleString())
