@@ -123,7 +123,8 @@ model TwitterLates {
   location  String?
   Keyword   Keyword? @relation(fields: [keywordId], references: [id])
   keywordId String?
-  // @@fulltext([content])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 
   @@id([userName, contentId])
 }

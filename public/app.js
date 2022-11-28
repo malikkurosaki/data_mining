@@ -1,6 +1,7 @@
 const main = $("#main")
 const html = main.html()
 
+
 setInterval(() => {
     $.get('/gambar/ggl').then(val => {
         $("#ggl").attr("src", `data:image/png;base64, ${val}`)
@@ -18,3 +19,7 @@ setInterval(() => {
     $("#wkt").html((new Date()).toLocaleString())
     console.log("update")
 }, 2000);
+
+
+
+
