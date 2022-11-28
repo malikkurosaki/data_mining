@@ -21,17 +21,17 @@
             <div id="wkt" class="h4 text-light"></div>
         </div>
         <div id="main" class="row p-4 bg-dark">
-            <div class="p-2 col-sm-6 col-md">
-                <div id="ytb" width="100%" class="text-white p-2 border"></div>
+            <div class="p-2 col-sm-6 col-md text-light bg-dark  border ">
+                <small><code id="ytb"  class="text-light p-2 "></code></small>
             </div>
-            <div class="p-2 col-sm-6 col-md">
-                <div id="ggl" width="100%" class="text-white p-2 border"></div>
+            <div class="p-2 col-sm-6 col-md text-light bg-dark border ">
+                <small ><code id="ggl"></code></small>
             </div>
-            <div class="p-2 col-sm-6 col-md">
-                <div id="fb" width="100%" class="text-white p-2 border"></div>
+            <div class="p-2 col-sm-6 col-md text-light bg-dark  border ">
+                <small><code id="fb"  class="text-light p-2 "></code></small>
             </div>
-            <div class="p-2 col-sm-6 col-md">
-                <div id="twt" width="100%" class="text-white p-2 border"></div>
+            <div class="p-2 col-sm-6 col-md text-light bg-dark  border ">
+                <small><code id="twt"  class="text-light p-2 "></code></small>
             </div>
         </div>
     </div>
@@ -40,16 +40,16 @@
 
     setInterval(() => {
         $.get('/api/terminal?name=ggle').then(val => {
-            $("#ggl").html(val.join("<br />"));
+            $("#ggl").html(val);
         })
         $.get('/api/terminal?name=ytb').then(val => {
-            $("#ytb").html(val.join("<br />"))
+            $("#ytb").html(val)
         })
         $.get('/api/terminal?name=fb').then(val => {
-            $("#fb").html(val.join("<br />"))
+            $("#fb").html(val)
         })
         $.get('/api/terminal?name=twit').then(val => {
-            $("#twt").html(val.join("<br />"))
+            $("#twt").html(val)
         })
 
         $("#wkt").html((new Date()).toLocaleString())

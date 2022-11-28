@@ -40,7 +40,7 @@ app.get('/api/terminal', async (req, res) => {
         if (listLog.length > berapa) {
             listLog.splice(0, (listLog.length - berapa) - 1)
         }
-        log = [...listLog]
+        log = [...listLog].join("<br \>")
 
     } 
 
