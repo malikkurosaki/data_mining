@@ -33,7 +33,7 @@ app.get('/api/terminal', async (req, res) => {
     if (!name) res.status(400).send(400)
     let home = os.platform() == "darwin" ? `/Users/mac/.pm2/logs/${name}-out.log` : `/home/makuro/.pm2/logs/${name}-out.log`;
     let log = []
-    let berapa = 20
+    let berapa = 15
     if (fs.existsSync(home)) {
         // exec(`pm2 flush ${name}`)
         let listLog = fs.readFileSync(home).toString().split('\n')

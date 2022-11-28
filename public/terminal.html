@@ -40,16 +40,16 @@
 
     setInterval(() => {
         $.get('/api/terminal?name=ggle').then(val => {
-            $("#ggl").html(val.join("<br />"));
+            $("#ggl").html(val.join("<br /><br />"));
         })
         $.get('/api/terminal?name=ytb').then(val => {
-            $("#ytb").html(val.join("<br />"))
+            $("#ytb").html(val.join("<br /><br />"))
         })
         $.get('/api/terminal?name=fb').then(val => {
-            $("#fb").html(val.join("<br />"))
+            $("#fb").html(val.join("<br /><br />"))
         })
         $.get('/api/terminal?name=twit').then(val => {
-            $("#twt").html(val.join("<br />"))
+            $("#twt").html(val.join("<br /><br />"))
         })
 
         $("#wkt").html((new Date()).toLocaleString())
