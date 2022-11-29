@@ -39,7 +39,7 @@
 <script>
 
     setInterval(() => {
-        $.get('/api/terminal?name=ggle').then(val => {
+        $.get('/api/terminal?name=ggl').then(val => {
             $("#ggl").html(val.join("<br />"));
         })
         $.get('/api/terminal?name=ytb').then(val => {
@@ -48,7 +48,7 @@
         $.get('/api/terminal?name=fb').then(val => {
             $("#fb").html(val.join("<br />"))
         })
-        $.get('/api/terminal?name=twit').then(val => {
+        $.get('/api/terminal?name=twt').then(val => {
             $("#twt").html(val.join("<br />"))
         })
 
